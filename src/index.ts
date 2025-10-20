@@ -1,6 +1,7 @@
 import { driver, testConnection } from './db.js';
 import { addPerson, listPeople, findPerson, deletePerson } from './person.service.js';
 import { createFriendship, listFriends, deleteFriendship } from './friendship.service.js';
+import { recByCity, recByHobby } from './recommendation.service.js';
 
 async function main() {
   try {
@@ -19,6 +20,15 @@ async function main() {
     await createFriendship('Ana', 'Juan');
     await createFriendship('Ana', 'Lucía');
     await createFriendship('Juan', 'Pedro');
+
+    //Recomendaciones por ciudad
+    const cityRecs = await recByCity('Ana');
+    console.log('\nRecomendaciones por ciudad (para Ana):', cityRecs.map(p => p.nombre));
+
+    //Recomendaciones por hobby
+    const hobbyRecs = await recByHobby('Ana');
+    console.log('\nRecomendaciones por hobby (para Ana):', hobbyRecs.map(p => p.nombre));
+
 
     //Ver amigos de Ana
     const amigosAna = await listFriends('Ana');
