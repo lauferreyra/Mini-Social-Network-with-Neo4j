@@ -2,6 +2,7 @@ import { driver, testConnection } from './db.js';
 import { addPerson, listPeople, findPerson, deletePerson } from './person.service.js';
 import { createFriendship, listFriends, deleteFriendship } from './friendship.service.js';
 import { recByCity, recByHobby } from './recommendation.service.js';
+import { getStats } from './stats.service.js';
 
 async function main() {
   try {
@@ -20,6 +21,11 @@ async function main() {
     await createFriendship('Ana', 'Juan');
     await createFriendship('Ana', 'Lucía');
     await createFriendship('Juan', 'Pedro');
+
+    //Obtener estadísticas
+    const stats = await getStats();
+    console.log('\nEstadísticas de la red social:');
+    console.table(stats);
 
     //Recomendaciones por ciudad
     const cityRecs = await recByCity('Ana');
