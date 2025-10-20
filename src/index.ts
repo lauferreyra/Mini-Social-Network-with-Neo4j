@@ -1,24 +1,31 @@
-import 'dotenv/config';
-import neo4j, { Driver } from 'neo4j-driver';
+import { driver, testConnection } from './db.js';
+import { addPerson, listPeople, findPerson, deletePerson } from './person.service.js';
 
-const URI = process.env.NEO4J_URI || 'bolt://localhost:7687';
-const USER = process.env.NEO4J_USER || 'neo4j';
-const PASSWORD = process.env.NEO4J_PASSWORD || 'password123';
-
-const driver: Driver = neo4j.driver(URI, neo4j.auth.basic(USER, PASSWORD));
-
-async function connection() {
+async function main() {
   try {
-    console.log('Conectando a Neo4j');
-    await driver.getServerInfo();
-    console.log('Conexión exitosa con Neo4j');
+    await testConnection();
 
-  } catch (error) {
-    console.error('Error al conectar con Neo4j:', error);
+    //Agregar personas
+    await addPerson({ nombre: 'Ana', ciudad: 'Córdoba', hobby: 'música' });
+    await addPerson({ nombre: 'Juan', ciudad: 'Córdoba', hobby: 'fútbol' });
+    await addPerson({ nombre: 'Lucía', ciudad: 'Rosario', hobby: 'música' });
+
+    //Listar todas
+    const all = await listPeople();
+    console.log('Personas:', all);
+
+    //Buscar una
+    const ana = await findPerson('Ana');
+    console.log('Encontrada:', ana);
+
+    //Borrar una
+    const deleted = await deletePerson('Lucía');
+    console.log(deleted ? 'Lucía eliminada' : 'No se encontró Lucía');
+  } catch (e) {
+    console.error('Error general:', e);
   } finally {
     await driver.close();
-    console.log('Conexión cerrada.');
   }
 }
 
-connection();
+main();
