@@ -27,3 +27,17 @@ NEO4J_PASSWORD=password123
 npm install
 npm run start
 ```
+
+## Menú
+```
+1. Agregar persona
+2. Listar personas
+3. Buscar persona
+4. Crear amistad
+5. Ver amigos de una persona
+6. Eliminar amistad
+7. Recomendaciones por ciudad
+8. Recomendaciones por hobby
+9. Estadísticas
+0. Salir
+```
